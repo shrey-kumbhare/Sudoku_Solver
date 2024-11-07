@@ -1,25 +1,49 @@
-export const isValidSudoku = (grid) => {
-  for (let i = 0; i < 9; i++) {
-    const row = new Set();
-    const col = new Set();
-    const box = new Set();
-
-    for (let j = 0; j < 9; j++) {
-      if (grid[i][j] !== "" && row.has(grid[i][j])) return false;
-      row.add(grid[i][j]);
-
-      if (grid[j][i] !== "" && col.has(grid[j][i])) return false;
-      col.add(grid[j][i]);
-
-      const boxRow = 3 * Math.floor(i / 3);
-      const boxCol = 3 * Math.floor(j / 3);
-      if (
-        grid[boxRow + Math.floor(j / 3)][boxCol + (j % 3)] !== "" &&
-        box.has(grid[boxRow + Math.floor(j / 3)][boxCol + (j % 3)])
-      )
+export function isValidSudoku(grid) {
+  // Check all rows
+  for (let row = 0; row < 9; row++) {
+    const seen = new Set();
+    for (let col = 0; col < 9; col++) {
+      const value = grid[row][col];
+      if (value !== "" && seen.has(value)) {
         return false;
-      box.add(grid[boxRow + Math.floor(j / 3)][boxCol + (j % 3)]);
+      }
+      if (value !== "") {
+        seen.add(value);
+      }
     }
   }
+
+  // Check all columns
+  for (let col = 0; col < 9; col++) {
+    const seen = new Set();
+    for (let row = 0; row < 9; row++) {
+      const value = grid[row][col];
+      if (value !== "" && seen.has(value)) {
+        return false;
+      }
+      if (value !== "") {
+        seen.add(value);
+      }
+    }
+  }
+
+  // Check all 3x3 subgrids
+  for (let r = 0; r < 9; r += 3) {
+    for (let c = 0; c < 9; c += 3) {
+      const seen = new Set();
+      for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+          const value = grid[r + i][c + j];
+          if (value !== "" && seen.has(value)) {
+            return false;
+          }
+          if (value !== "") {
+            seen.add(value);
+          }
+        }
+      }
+    }
+  }
+
   return true;
-};
+}

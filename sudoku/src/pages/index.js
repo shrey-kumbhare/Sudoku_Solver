@@ -4,12 +4,10 @@ import { isValidSudoku } from "../utils/validate";
 import { solveSudoku } from "../utils/solve";
 
 export default function Home() {
-  // Initialize state for the grid, error message, and solved grid
   const [grid, setGrid] = useState(Array(9).fill(Array(9).fill("")));
   const [error, setError] = useState(null);
   const [solvedGrid, setSolvedGrid] = useState(null);
 
-  // Function to handle input changes and reset the solved grid
   const handleInputChange = (newGrid) => {
     setGrid(newGrid);
     setSolvedGrid(null);
@@ -33,7 +31,6 @@ export default function Home() {
     }
   };
 
-  // Function to fill the grid with a sample Sudoku puzzle
   const handleSampleSudoku = () => {
     const samplePuzzle = [
       ["5", "3", "", "", "7", "", "", "", ""],
@@ -47,7 +44,7 @@ export default function Home() {
       ["", "", "", "", "8", "", "", "7", "9"],
     ];
     setGrid(samplePuzzle);
-    setSolvedGrid(null); // Reset the solved grid whenever a sample is loaded
+    setSolvedGrid(null);
   };
 
   return (
