@@ -1,0 +1,17 @@
+.grid input {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  font-size: 1.2rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.grid input:focus {
+  border-color: #4caf50;
+  outline: none;
+}
+.disabled {
+  background-color: #f1f1f1;
+}
