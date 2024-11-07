@@ -4,7 +4,9 @@ import { isValidSudoku } from "../utils/validate";
 import { solveSudoku } from "../utils/solve";
 
 export default function Home() {
-  const [grid, setGrid] = useState(Array(9).fill(Array(9).fill("")));
+  const [grid, setGrid] = useState(
+    Array.from({ length: 9 }, () => Array(9).fill(""))
+  );
   const [error, setError] = useState(null);
   const [solvedGrid, setSolvedGrid] = useState(null);
 
@@ -13,7 +15,6 @@ export default function Home() {
     setSolvedGrid(null);
   };
 
-  // Function to validate the Sudoku grid
   const handleValidate = () => {
     if (!isValidSudoku(grid)) {
       setError("The Sudoku puzzle is invalid. Please check the inputs.");
@@ -22,10 +23,10 @@ export default function Home() {
     }
   };
 
-  // Function to solve the Sudoku grid
   const handleSolve = () => {
     if (isValidSudoku(grid)) {
       setSolvedGrid(solveSudoku(grid));
+      setError(null);
     } else {
       setError("The Sudoku puzzle is invalid. Please check the inputs.");
     }
@@ -45,36 +46,28 @@ export default function Home() {
     ];
     setGrid(samplePuzzle);
     setSolvedGrid(null);
+    setError(null);
   };
 
   return (
     <div className="container">
       <h1>Sudoku Solver</h1>
-      <SudokuGrid onInputChange={handleInputChange} grid={grid} />
+      <SudokuGrid grid={grid} onInputChange={handleInputChange} />
       <button onClick={handleValidate}>Validate</button>
       <button onClick={handleSolve}>Solve</button>
       <button onClick={handleSampleSudoku}>Load Sample Sudoku</button>
       {error && <div className="error">{error}</div>}
-      {solvedGrid && (
-        <div className="solution">
-          <h2>Solved Sudoku</h2>
-          <SudokuGrid onInputChange={() => {}} grid={solvedGrid} />
-        </div>
-      )}
+
       <style jsx>{`
-        .grid {
-          display: grid;
-          grid-template-columns: repeat(9, 40px);
-          gap: 5px;
-        }
-        .row {
-          display: flex;
-        }
-        input {
-          width: 40px;
-          height: 40px;
+        .container {
           text-align: center;
-          font-size: 16px;
+          background-color: #00bfff;
+          color: white;
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
         }
         button {
           margin: 10px;
@@ -83,9 +76,15 @@ export default function Home() {
           color: white;
           border: none;
           cursor: pointer;
+          font-size: 14px;
+          border-radius: 5px;
+        }
+        button:hover {
+          background-color: #45a049;
         }
         .error {
-          color: red;
+          color: #ff4d4d;
+          margin-top: 10px;
         }
         .solution {
           margin-top: 20px;
