@@ -9,17 +9,21 @@ export default function Home() {
   );
   const [error, setError] = useState(null);
   const [solvedGrid, setSolvedGrid] = useState(null);
+  const [validationMessage, setValidationMessage] = useState("");
 
   const handleInputChange = (newGrid) => {
     setGrid(newGrid);
     setSolvedGrid(null);
+    setValidationMessage("");
   };
 
   const handleValidate = () => {
     if (!isValidSudoku(grid)) {
       setError("The Sudoku puzzle is invalid. Please check the inputs.");
+      setValidationMessage("");
     } else {
       setError(null);
+      setValidationMessage("You can solve it!");
     }
   };
 
@@ -47,17 +51,24 @@ export default function Home() {
     setGrid(samplePuzzle);
     setSolvedGrid(null);
     setError(null);
+    setValidationMessage("");
   };
 
   return (
     <div className="container">
       <h1>Sudoku Solver</h1>
+      {validationMessage && <div className="success">{validationMessage}</div>}
       <SudokuGrid grid={grid} onInputChange={handleInputChange} />
-      <button onClick={handleValidate}>Validate</button>
-      <button onClick={handleSolve}>Solve</button>
-      <button onClick={handleSampleSudoku}>Load Sample Sudoku</button>
+
+      <div className="button-container">
+        <button onClick={handleValidate}>Validate</button>
+        <button onClick={handleSolve}>Solve</button>
+        <button onClick={handleSampleSudoku}>Load Sample Sudoku</button>
+      </div>
+
       {error && <div className="error">{error}</div>}
 
+      {/* Display success message */}
       <style jsx>{`
         .container {
           text-align: center;
@@ -69,8 +80,14 @@ export default function Home() {
           align-items: center;
           justify-content: center;
         }
+
+        .button-container {
+          display: flex; /* Align buttons horizontally */
+          gap: 10px; /* Space between buttons */
+          margin-top: 20px; /* Margin above the buttons */
+        }
+
         button {
-          margin: 10px;
           padding: 10px;
           background-color: #4caf50;
           color: white;
@@ -78,16 +95,21 @@ export default function Home() {
           cursor: pointer;
           font-size: 14px;
           border-radius: 5px;
+          width: 150px; /* Optional: control the width of each button */
         }
+
         button:hover {
           background-color: #45a049;
         }
+
         .error {
           color: #ff4d4d;
           margin-top: 10px;
         }
-        .solution {
-          margin-top: 20px;
+
+        .success {
+          color: #005a04;
+          margin-top: 10px;
         }
       `}</style>
     </div>
